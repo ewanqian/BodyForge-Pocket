@@ -99,11 +99,12 @@
           <p class="quiet">一行一个食物，例如：鸡蛋、牛奶、鸡腿、米饭、青菜、香蕉、酸奶、豆腐。</p>
         </article>
 
-        <article class="panel">
+        <article class="panel" id="reviewPanel">
           <div class="panel-head">
             <h2>晚上落回</h2>
             <span id="completionScore">0/4</span>
           </div>
+          <p class="done-banner hidden" id="doneBanner" role="status">今天闭环。明天打开时，从这里继续就行。</p>
           <div class="checklist" id="completionList"></div>
           <textarea id="reviewText" rows="4" placeholder="实际吃了什么、练了什么、明天怎么调。"></textarea>
         </article>

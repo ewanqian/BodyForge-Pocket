@@ -321,7 +321,10 @@ function renderCompletion() {
     container.appendChild(row);
   });
   const done = completionItems.filter(([key]) => day.completed[key]).length;
+  const isComplete = done === completionItems.length;
   $("completionScore").textContent = `${done}/${completionItems.length}`;
+  $("doneBanner").classList.toggle("hidden", !isComplete);
+  $("reviewPanel").classList.toggle("complete", isComplete);
 }
 
 function renderMuscles() {

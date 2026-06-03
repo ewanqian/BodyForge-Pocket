@@ -132,6 +132,11 @@ h3 {
   padding: 20px;
 }
 
+.panel.complete {
+  border-color: rgba(47, 125, 90, 0.52);
+  background: linear-gradient(180deg, rgba(245, 252, 247, 0.97), rgba(255, 253, 247, 0.94));
+}
+
 .panel-head,
 .section-head,
 .card-head {
@@ -299,6 +304,17 @@ button {
   display: grid;
   gap: 10px;
   margin: 16px 0;
+}
+
+.done-banner {
+  margin: 14px 0 0;
+  border: 1px solid rgba(47, 125, 90, 0.24);
+  border-radius: 7px;
+  background: rgba(47, 125, 90, 0.1);
+  color: #245f45;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 850;
 }
 
 .check-item {
