@@ -560,3 +560,11 @@ function bindEvents() {
 bindEvents();
 render();
 saveState();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {
+      $("syncStatus").textContent = "离线缓存注册失败，但本地保存仍可用。";
+    });
+  });
+}
