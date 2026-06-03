@@ -544,10 +544,13 @@ function bindEvents() {
   });
   $("downloadMarkdown").addEventListener("click", () => download(`bodyforge-${today}.md`, makeMarkdown(), "text/markdown"));
   $("downloadJson").addEventListener("click", () => download(`bodyforge-data-${today}.json`, JSON.stringify(state, null, 2), "application/json"));
-  $("copyMarkdown").addEventListener("click", async () => {
+  const copyMarkdown = async () => {
     await navigator.clipboard.writeText(makeMarkdown());
     $("syncStatus").textContent = "Markdown 已复制。";
-  });
+  };
+  $("copyMarkdown").addEventListener("click", copyMarkdown);
+  $("quickMarkdown").addEventListener("click", () => download(`bodyforge-${today}.md`, makeMarkdown(), "text/markdown"));
+  $("quickCopy").addEventListener("click", copyMarkdown);
   $("testWorker").addEventListener("click", () => {
     testWorkerConnection().catch((error) => {
       $("workerStatus").textContent = `连接失败：${error.message}`;
@@ -555,6 +558,11 @@ function bindEvents() {
     });
   });
   $("sendIssue").addEventListener("click", () => {
+    sendGitHubIssue().catch((error) => {
+      $("syncStatus").textContent = `GitHub 提交失败：${error.message}`;
+    });
+  });
+  $("quickSync").addEventListener("click", () => {
     sendGitHubIssue().catch((error) => {
       $("syncStatus").textContent = `GitHub 提交失败：${error.message}`;
     });
