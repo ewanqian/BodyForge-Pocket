@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">BodyForge Pocket icon</title>
+  <desc id="desc">A green app icon with a forged B mark and training ring.</desc>
+  <rect width="512" height="512" rx="96" fill="#2f7d5a"/>
+  <circle cx="256" cy="256" r="164" fill="none" stroke="#f8f3ea" stroke-width="28"/>
+  <path fill="#f8f3ea" d="M176 142h104c54 0 88 29 88 73 0 25-12 46-35 58 31 11 49 36 49 70 0 51-39 83-101 83H176V142Zm91 113c26 0 42-13 42-34 0-20-16-32-42-32h-33v66h33Zm8 123c30 0 48-15 48-40 0-24-18-38-49-38h-40v78h41Z"/>
+  <path fill="#c9e4d4" d="M132 103h42v55h-42zM338 354h42v55h-42z"/>
+</svg>

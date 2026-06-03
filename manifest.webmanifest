@@ -8,5 +8,13 @@
   "description": "Local-first daily body routine assistant.",
   "scope": "./",
   "orientation": "portrait-primary",
-  "categories": ["health", "fitness", "productivity"]
+  "categories": ["health", "fitness", "productivity"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

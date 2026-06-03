@@ -4,7 +4,8 @@ const APP_SHELL = [
   "./index.html",
   "./styles.css",
   "./app.js",
-  "./manifest.webmanifest"
+  "./manifest.webmanifest",
+  "./icon.svg"
 ];
 
 self.addEventListener("install", (event) => {
