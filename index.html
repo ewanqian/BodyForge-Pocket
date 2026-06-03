@@ -135,6 +135,10 @@
               <span>Cloudflare Worker URL</span>
               <input id="workerUrl" placeholder="https://bodyforge-sync.your-subdomain.workers.dev/issue">
             </label>
+            <div class="wide inline-action">
+              <button class="secondary" id="testWorker" type="button">测试 Worker 连接</button>
+              <span id="workerStatus">未测试</span>
+            </div>
             <label class="wide">
               <span>Worker shared key</span>
               <input id="workerKey" type="password" autocomplete="off" placeholder="可选：Worker 里设置 BODYFORGE_SHARED_KEY 后填写">

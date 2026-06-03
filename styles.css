@@ -317,6 +317,27 @@ summary {
   font-weight: 900;
 }
 
+.inline-action {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.inline-action span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.status-good {
+  color: var(--green) !important;
+}
+
+.status-bad {
+  color: var(--red) !important;
+}
+
 @media (max-width: 880px) {
   .app-top {
     display: grid;
@@ -340,4 +361,3 @@ summary {
     width: 100%;
   }
 }
-

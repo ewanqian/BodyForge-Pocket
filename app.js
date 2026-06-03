@@ -385,6 +385,49 @@ function download(filename, text, type = "text/plain") {
   URL.revokeObjectURL(url);
 }
 
+function workerHealthUrl(workerUrl) {
+  if (!workerUrl) return "";
+  try {
+    const url = new URL(workerUrl);
+    url.pathname = url.pathname.replace(/\/issue\/?$/, "/health");
+    if (!url.pathname.endsWith("/health")) {
+      url.pathname = "/health";
+    }
+    url.search = "";
+    url.hash = "";
+    return url.toString();
+  } catch {
+    return "";
+  }
+}
+
+async function testWorkerConnection() {
+  const workerUrl = $("workerUrl").value.trim();
+  const healthUrl = workerHealthUrl(workerUrl);
+  state.github.workerUrl = workerUrl;
+  saveState();
+
+  if (!healthUrl) {
+    $("workerStatus").textContent = "请先填写有效 Worker URL";
+    $("workerStatus").className = "status-bad";
+    return;
+  }
+
+  $("workerStatus").textContent = "正在测试...";
+  $("workerStatus").className = "";
+  const response = await fetch(healthUrl, { method: "GET" });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) {
+    $("workerStatus").textContent = `连接失败：${data.error || response.status}`;
+    $("workerStatus").className = "status-bad";
+    return;
+  }
+
+  $("workerStatus").textContent = "Worker 在线";
+  $("workerStatus").className = "status-good";
+  $("syncStatus").textContent = "Cloudflare Worker 已连通，可以使用 Worker 模式提交 Issue。";
+}
+
 async function sendGitHubIssue() {
   const owner = $("githubOwner").value.trim();
   const repo = $("githubRepo").value.trim();
@@ -500,6 +543,12 @@ function bindEvents() {
   $("copyMarkdown").addEventListener("click", async () => {
     await navigator.clipboard.writeText(makeMarkdown());
     $("syncStatus").textContent = "Markdown 已复制。";
+  });
+  $("testWorker").addEventListener("click", () => {
+    testWorkerConnection().catch((error) => {
+      $("workerStatus").textContent = `连接失败：${error.message}`;
+      $("workerStatus").className = "status-bad";
+    });
   });
   $("sendIssue").addEventListener("click", () => {
     sendGitHubIssue().catch((error) => {
