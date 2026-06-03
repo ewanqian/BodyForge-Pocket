@@ -69,6 +69,20 @@
             <button class="muscle" data-muscle="legs" type="button">腿</button>
           </div>
           <p class="quiet">选择训练后，今天刺激到的部位会亮起来。这个版本记录训练焦点，不做医疗或体态诊断。</p>
+          <div class="observation-box">
+            <div class="panel-head">
+              <h3>本地肌肉观察</h3>
+              <span id="photoStatus">未记录照片</span>
+            </div>
+            <div class="photo-preview empty" id="photoPreview">本地照片预览</div>
+            <div class="sync-grid">
+              <label class="photo-picker secondary" for="bodyPhoto">选择照片</label>
+              <input class="visually-hidden" id="bodyPhoto" type="file" accept="image/*">
+              <button class="secondary" id="clearPhoto" type="button">清除照片</button>
+            </div>
+            <textarea id="bodyObservation" rows="3" placeholder="例如：肩更饱满、背部发力感更清楚、腿部酸痛。"></textarea>
+            <p class="quiet">照片只压缩保存在当前浏览器，不上传，也不会写入 Markdown 或 GitHub Issue。</p>
+          </div>
         </article>
       </section>
 

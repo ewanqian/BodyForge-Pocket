@@ -185,6 +185,15 @@ textarea {
   resize: vertical;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .wide {
   grid-column: 1 / -1;
 }
@@ -292,6 +301,52 @@ button {
   border-color: var(--green);
   background: linear-gradient(145deg, #2f7d5a, #50a878);
   color: white;
+}
+
+.observation-box {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.photo-preview {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  min-height: 180px;
+  overflow: hidden;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: #faf6ee;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 850;
+}
+
+.photo-preview img {
+  display: block;
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+}
+
+.photo-preview.empty {
+  background: repeating-linear-gradient(135deg, #faf6ee, #faf6ee 12px, #f2eadf 12px, #f2eadf 24px);
+}
+
+.photo-picker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f8f3ea;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 850;
 }
 
 .quiet {

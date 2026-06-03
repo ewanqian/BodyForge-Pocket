@@ -129,8 +129,14 @@ function ensureDay(date) {
     selectedWorkout: "",
     completed: {},
     muscleFocus: [],
+    bodyObservation: {
+      note: "",
+      photoDataUrl: "",
+      photoName: ""
+    },
     review: ""
   };
+  state.days[date].bodyObservation ||= { note: "", photoDataUrl: "", photoName: "" };
   return state.days[date];
 }
 
@@ -259,6 +265,7 @@ function render() {
   $("githubOwner").value = state.github.owner;
   $("githubRepo").value = state.github.repo;
   $("workerUrl").value = state.github.workerUrl || "";
+  $("bodyObservation").value = day.bodyObservation?.note || "";
 
   document.querySelectorAll(".tap").forEach((button) => {
     const symptom = button.dataset.symptom;
@@ -270,6 +277,7 @@ function render() {
   renderCompletion();
   renderMuscles();
   renderConsistency();
+  renderObservation();
 }
 
 function renderMealOptions() {
@@ -392,6 +400,40 @@ function renderMuscles() {
   }
 }
 
+function renderObservation() {
+  const observation = day.bodyObservation || {};
+  const preview = $("photoPreview");
+  const hasPhoto = Boolean(observation.photoDataUrl);
+  preview.classList.toggle("empty", !hasPhoto);
+  preview.innerHTML = hasPhoto
+    ? `<img src="${observation.photoDataUrl}" alt="今日本地身体观察照片">`
+    : "本地照片预览";
+  $("photoStatus").textContent = hasPhoto ? "本地已保存" : "未记录照片";
+}
+
+function resizeImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("error", () => reject(new Error("照片读取失败")));
+    reader.addEventListener("load", () => {
+      const image = new Image();
+      image.addEventListener("error", () => reject(new Error("照片解析失败")));
+      image.addEventListener("load", () => {
+        const maxSide = 960;
+        const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.78));
+      });
+      image.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+  });
+}
+
 function updateCheckinFromInputs() {
   day.checkin.wakeTime = $("wakeTime").value;
   day.checkin.sleepHours = Number($("sleepHours").value || 0);
@@ -421,6 +463,10 @@ function makeMarkdown() {
     "",
     "## 今日训练选择",
     workout ? `### ${workout.title}\n${workout.steps.map((item) => `- ${item}`).join("\n")}\n- 肌肉焦点：${muscleText}\n- ${workout.note}` : "- 未选择",
+    "",
+    "## 本地肌肉观察",
+    `- 观察：${day.bodyObservation?.note || "未记录"}`,
+    `- 本地照片：${day.bodyObservation?.photoDataUrl ? "已保存在当前浏览器，不随 Markdown/Issue 同步" : "未记录"}`,
     "",
     "## 完成情况",
     ...completionItems.map(([key, label]) => `- ${day.completed[key] ? "[x]" : "[ ]"} ${label}`),
@@ -564,6 +610,32 @@ function bindEvents() {
     day.completed.review = day.review.trim().length > 0;
     saveState();
     renderCompletion();
+  });
+  $("bodyObservation").addEventListener("input", () => {
+    day.bodyObservation.note = $("bodyObservation").value;
+    saveState();
+  });
+  $("bodyPhoto").addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      day.bodyObservation.photoDataUrl = await resizeImage(file);
+      day.bodyObservation.photoName = file.name;
+      saveState();
+      renderObservation();
+      $("syncStatus").textContent = "照片已压缩并保存在当前浏览器，不会上传。";
+    } catch (error) {
+      $("syncStatus").textContent = error.message;
+    } finally {
+      event.target.value = "";
+    }
+  });
+  $("clearPhoto").addEventListener("click", () => {
+    day.bodyObservation.photoDataUrl = "";
+    day.bodyObservation.photoName = "";
+    saveState();
+    renderObservation();
+    $("syncStatus").textContent = "本地照片已清除。";
   });
   $("resetInventory").addEventListener("click", () => {
     state.inventory = [...defaultState.inventory];
