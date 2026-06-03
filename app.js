@@ -57,6 +57,7 @@ let state = loadState();
 let today = localDate();
 let day = ensureDay(today);
 let githubToken = "";
+let deferredInstallPrompt = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -555,11 +556,35 @@ function bindEvents() {
       $("syncStatus").textContent = `GitHub 提交失败：${error.message}`;
     });
   });
+  $("installApp").addEventListener("click", async () => {
+    if (!deferredInstallPrompt) {
+      $("syncStatus").textContent = "当前浏览器暂未提供安装入口，可用浏览器菜单添加到主屏幕。";
+      return;
+    }
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice.catch(() => ({ outcome: "dismissed" }));
+    deferredInstallPrompt = null;
+    $("installApp").classList.add("hidden");
+    $("syncStatus").textContent = choice.outcome === "accepted" ? "已开始安装 BodyForge Pocket。" : "已取消安装。";
+  });
 }
 
 bindEvents();
 render();
 saveState();
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  $("installApp").classList.remove("hidden");
+  $("syncStatus").textContent = "可以把 BodyForge Pocket 安装到桌面或主屏幕。";
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  $("installApp").classList.add("hidden");
+  $("syncStatus").textContent = "BodyForge Pocket 已安装。";
+});
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
