@@ -521,7 +521,7 @@ async function sendGitHubIssue() {
   }
 
   if (!owner || !repo || !githubToken) {
-    $("syncStatus").textContent = "请先填写 Cloudflare Worker URL，或填写 owner、repo 和临时 token。";
+    $("syncStatus").textContent = "请优先填写 Cloudflare Worker URL；临时测试时再填写 owner、repo 和浏览器 token。";
     return;
   }
 

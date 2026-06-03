@@ -134,35 +134,48 @@
         </div>
         <details class="github-box">
           <summary>GitHub Issue 同步设置</summary>
-          <div class="control-grid">
-            <label>
-              <span>Owner</span>
-              <input id="githubOwner" value="ewanqian">
-            </label>
-            <label>
-              <span>Repo</span>
-              <input id="githubRepo" value="BodyForge">
-            </label>
-            <label class="wide">
-              <span>Fine-grained token</span>
-              <input id="githubToken" type="password" autocomplete="off" placeholder="只保存在当前浏览器内存，不写入仓库">
-            </label>
-            <label class="wide">
-              <span>Cloudflare Worker URL</span>
-              <input id="workerUrl" placeholder="https://bodyforge-sync.your-subdomain.workers.dev/issue">
-            </label>
-            <div class="wide inline-action">
-              <button class="secondary" id="testWorker" type="button">测试 Worker 连接</button>
-              <span id="workerStatus">未测试</span>
+          <div class="sync-mode recommended">
+            <div>
+              <p class="mode-label">推荐：Cloudflare Worker</p>
+              <p class="quiet">长期使用把 GitHub token 放在 Worker secret 里，页面只保存 Worker URL 和可选 shared key。</p>
             </div>
-            <label class="wide">
-              <span>Worker shared key</span>
-              <input id="workerKey" type="password" autocomplete="off" placeholder="可选：Worker 里设置 BODYFORGE_SHARED_KEY 后填写">
-            </label>
+            <div class="control-grid">
+              <label class="wide">
+                <span>Cloudflare Worker URL</span>
+                <input id="workerUrl" placeholder="https://bodyforge-sync.your-subdomain.workers.dev/issue">
+              </label>
+              <div class="wide inline-action">
+                <button class="secondary" id="testWorker" type="button">测试 Worker 连接</button>
+                <span id="workerStatus">未测试</span>
+              </div>
+              <label class="wide">
+                <span>Worker shared key</span>
+                <input id="workerKey" type="password" autocomplete="off" placeholder="可选：Worker 里设置 BODYFORGE_SHARED_KEY 后填写">
+              </label>
+            </div>
           </div>
-          <p class="quiet">更推荐 Cloudflare Worker：GitHub token 放在 Worker secret 里。浏览器 token 模式只适合临时测试。</p>
+          <div class="sync-mode temporary">
+            <div>
+              <p class="mode-label">临时测试：浏览器 token</p>
+              <p class="quiet">只适合短时测试。token 只放在当前浏览器内存里，不写入仓库；刷新后需要重新输入。</p>
+            </div>
+            <div class="control-grid">
+              <label>
+                <span>Owner</span>
+                <input id="githubOwner" value="ewanqian">
+              </label>
+              <label>
+                <span>Repo</span>
+                <input id="githubRepo" value="BodyForge">
+              </label>
+              <label class="wide">
+                <span>Fine-grained token</span>
+                <input id="githubToken" type="password" autocomplete="off" placeholder="临时测试用，优先使用 Worker 模式">
+              </label>
+            </div>
+          </div>
         </details>
-        <p class="quiet" id="syncStatus">默认只存在当前浏览器。GitHub 同步需要你手动输入 token 后点击提交。</p>
+        <p class="quiet" id="syncStatus">默认只存在当前浏览器。推荐配置 Cloudflare Worker 后再同步到 GitHub Issue。</p>
       </section>
     </main>
 
