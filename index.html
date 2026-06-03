@@ -144,6 +144,7 @@
           <button class="primary" id="downloadMarkdown" type="button">下载今日 Markdown</button>
           <button class="secondary" id="downloadJson" type="button">下载本地 JSON</button>
           <button class="secondary" id="copyMarkdown" type="button">复制 Markdown</button>
+          <button class="secondary" id="openIssueDraft" type="button">打开 Issue 草稿</button>
           <button class="secondary" id="sendIssue" type="button">提交到 GitHub Issue</button>
         </div>
         <details class="github-box">
@@ -189,7 +190,7 @@
             </div>
           </div>
         </details>
-        <p class="quiet" id="syncStatus">默认只存在当前浏览器。推荐配置 Cloudflare Worker 后再同步到 GitHub Issue。</p>
+        <p class="quiet" id="syncStatus">默认只存在当前浏览器。没有 Worker 时，可以打开预填 Issue 草稿并手动确认提交。</p>
       </section>
     </main>
 

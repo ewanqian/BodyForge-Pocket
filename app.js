@@ -505,6 +505,32 @@ function workerHealthUrl(workerUrl) {
   }
 }
 
+function issueDraftUrl(owner, repo) {
+  if (!owner || !repo) return "";
+  const url = new URL(`https://github.com/${owner}/${repo}/issues/new`);
+  url.searchParams.set("title", `BodyForge Daily Log — ${today}`);
+  url.searchParams.set("body", makeMarkdown());
+  url.searchParams.set("labels", "bodyforge-log");
+  return url.toString();
+}
+
+function openIssueDraft() {
+  const owner = $("githubOwner").value.trim();
+  const repo = $("githubRepo").value.trim();
+  state.github.owner = owner;
+  state.github.repo = repo;
+  saveState();
+
+  const url = issueDraftUrl(owner, repo);
+  if (!url) {
+    $("syncStatus").textContent = "请先填写 GitHub owner 和 repo，或配置 Cloudflare Worker。";
+    return;
+  }
+
+  window.open(url, "_blank", "noopener,noreferrer");
+  $("syncStatus").textContent = "已打开预填 GitHub Issue 草稿。请在 GitHub 页面确认后再提交。";
+}
+
 async function testWorkerConnection() {
   const workerUrl = $("workerUrl").value.trim();
   const healthUrl = workerHealthUrl(workerUrl);
@@ -567,7 +593,7 @@ async function sendGitHubIssue() {
   }
 
   if (!owner || !repo || !githubToken) {
-    $("syncStatus").textContent = "请优先填写 Cloudflare Worker URL；临时测试时再填写 owner、repo 和浏览器 token。";
+    openIssueDraft();
     return;
   }
 
@@ -675,6 +701,7 @@ function bindEvents() {
     $("syncStatus").textContent = "Markdown 已复制。";
   };
   $("copyMarkdown").addEventListener("click", copyMarkdown);
+  $("openIssueDraft").addEventListener("click", openIssueDraft);
   $("quickMarkdown").addEventListener("click", () => download(`bodyforge-${today}.md`, makeMarkdown(), "text/markdown"));
   $("quickCopy").addEventListener("click", copyMarkdown);
   $("testWorker").addEventListener("click", () => {
