@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2f7d5a">
+    <title>BodyForge Pocket</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="app-top">
+      <div>
+        <p class="eyebrow">BodyForge Pocket</p>
+        <h1>今天把身体往前推一点</h1>
+      </div>
+      <div class="today-chip" id="todayChip"></div>
+    </header>
+
+    <main class="app-shell">
+      <section class="hero-grid">
+        <article class="panel check-panel">
+          <div class="panel-head">
+            <h2>今日状态</h2>
+            <span id="saveState">已本地保存</span>
+          </div>
+          <div class="control-grid">
+            <label>
+              <span>起床</span>
+              <input id="wakeTime" type="time">
+            </label>
+            <label>
+              <span>睡眠</span>
+              <input id="sleepHours" type="number" step="0.1" min="0" max="14" value="7">
+            </label>
+            <label>
+              <span>精神</span>
+              <input id="energy" type="range" min="1" max="10" value="6">
+              <strong id="energyValue">6/10</strong>
+            </label>
+            <label>
+              <span>训练窗口</span>
+              <input id="trainingMinutes" type="number" min="0" max="180" value="45">
+            </label>
+          </div>
+          <div class="tap-row" role="group" aria-label="安全状态">
+            <button class="tap active" data-symptom="none" type="button">无警报</button>
+            <button class="tap danger" data-symptom="头晕" type="button">头晕</button>
+            <button class="tap danger" data-symptom="胸痛" type="button">胸痛</button>
+            <button class="tap danger" data-symptom="异常气短" type="button">气短</button>
+          </div>
+        </article>
+
+        <article class="panel muscle-panel">
+          <div class="panel-head">
+            <h2>肌肉反馈</h2>
+            <span id="muscleSummary">今天还没选择训练</span>
+          </div>
+          <div class="body-map" aria-label="肌肉反馈图">
+            <button class="muscle" data-muscle="shoulders" type="button">肩</button>
+            <button class="muscle" data-muscle="chest" type="button">胸</button>
+            <button class="muscle" data-muscle="back" type="button">背</button>
+            <button class="muscle" data-muscle="arms" type="button">臂</button>
+            <button class="muscle" data-muscle="core" type="button">核</button>
+            <button class="muscle" data-muscle="legs" type="button">腿</button>
+          </div>
+          <p class="quiet">选择训练后，今天刺激到的部位会亮起来。这个版本记录训练焦点，不做医疗或体态诊断。</p>
+        </article>
+      </section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">Meal Options</p>
+          <h2>今天吃什么</h2>
+        </div>
+        <button class="secondary" id="resetInventory" type="button">重置库存</button>
+      </section>
+      <section class="option-grid" id="mealOptions"></section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">Workout Routing</p>
+          <h2>今天练什么</h2>
+        </div>
+      </section>
+      <section class="option-grid" id="workoutOptions"></section>
+
+      <section class="two-col">
+        <article class="panel">
+          <div class="panel-head">
+            <h2>库存与偏好</h2>
+            <span>浏览器本地</span>
+          </div>
+          <textarea id="inventoryText" rows="5" spellcheck="false"></textarea>
+          <p class="quiet">一行一个食物，例如：鸡蛋、牛奶、鸡腿、米饭、青菜、香蕉、酸奶、豆腐。</p>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>晚上落回</h2>
+            <span id="completionScore">0/4</span>
+          </div>
+          <div class="checklist" id="completionList"></div>
+          <textarea id="reviewText" rows="4" placeholder="实际吃了什么、练了什么、明天怎么调。"></textarea>
+        </article>
+      </section>
+
+      <section class="panel sync-panel">
+        <div class="panel-head">
+          <h2>保存与私密通信</h2>
+          <span>Local-first</span>
+        </div>
+        <div class="sync-grid">
+          <button class="primary" id="downloadMarkdown" type="button">下载今日 Markdown</button>
+          <button class="secondary" id="downloadJson" type="button">下载本地 JSON</button>
+          <button class="secondary" id="copyMarkdown" type="button">复制 Markdown</button>
+          <button class="secondary" id="sendIssue" type="button">提交到 GitHub Issue</button>
+        </div>
+        <details class="github-box">
+          <summary>GitHub Issue 同步设置</summary>
+          <div class="control-grid">
+            <label>
+              <span>Owner</span>
+              <input id="githubOwner" value="ewanqian">
+            </label>
+            <label>
+              <span>Repo</span>
+              <input id="githubRepo" value="BodyForge">
+            </label>
+            <label class="wide">
+              <span>Fine-grained token</span>
+              <input id="githubToken" type="password" autocomplete="off" placeholder="只保存在当前浏览器内存，不写入仓库">
+            </label>
+            <label class="wide">
+              <span>Cloudflare Worker URL</span>
+              <input id="workerUrl" placeholder="https://bodyforge-sync.your-subdomain.workers.dev/issue">
+            </label>
+            <label class="wide">
+              <span>Worker shared key</span>
+              <input id="workerKey" type="password" autocomplete="off" placeholder="可选：Worker 里设置 BODYFORGE_SHARED_KEY 后填写">
+            </label>
+          </div>
+          <p class="quiet">更推荐 Cloudflare Worker：GitHub token 放在 Worker secret 里。浏览器 token 模式只适合临时测试。</p>
+        </details>
+        <p class="quiet" id="syncStatus">默认只存在当前浏览器。GitHub 同步需要你手动输入 token 后点击提交。</p>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

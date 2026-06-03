@@ -1,0 +1,343 @@
+:root {
+  --bg: #f3f0e8;
+  --surface: #fffdf7;
+  --surface-2: #ebe4d6;
+  --ink: #202124;
+  --muted: #6c665d;
+  --line: #d8d0c1;
+  --green: #2f7d5a;
+  --blue: #305f9b;
+  --amber: #b86d2d;
+  --red: #9f3f3f;
+  --focus: #1f6feb;
+  --shadow: 0 18px 48px rgba(44, 34, 20, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top left, #fff9ea 0, rgba(255, 249, 234, 0) 34rem), var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid rgba(31, 111, 235, 0.32);
+  outline-offset: 2px;
+}
+
+.app-top,
+.app-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.app-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 34px 0 22px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 720px;
+  margin-bottom: 0;
+  font-size: clamp(34px, 6vw, 68px);
+  line-height: 1.02;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 24px;
+}
+
+h3 {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.today-chip {
+  align-self: flex-start;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.hero-grid,
+.two-col {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 16px;
+}
+
+.panel,
+.meal-card,
+.workout-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 253, 247, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.panel {
+  padding: 20px;
+}
+
+.panel-head,
+.section-head,
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.panel-head span,
+.card-head span {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+}
+
+label span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  color: var(--ink);
+  padding: 10px 12px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.tap-row,
+.sync-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+button {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f8f3ea;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.tap {
+  padding: 8px 12px;
+}
+
+.tap.active,
+.primary {
+  border-color: var(--green);
+  background: var(--green);
+  color: white;
+}
+
+.tap.danger.active {
+  border-color: var(--red);
+  background: var(--red);
+}
+
+.secondary,
+.primary {
+  padding: 10px 14px;
+}
+
+.section-head {
+  margin: 28px 0 12px;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.meal-card,
+.workout-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.meal-card.selected,
+.workout-card.selected {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(47, 125, 90, 0.18), var(--shadow);
+}
+
+.meal-card ul,
+.workout-card ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.body-map {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.muscle {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  font-size: 24px;
+}
+
+.muscle.active {
+  border-color: var(--green);
+  background: linear-gradient(145deg, #2f7d5a, #50a878);
+  color: white;
+}
+
+.quiet {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.checklist {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+}
+
+.check-item input {
+  width: 18px;
+  height: 18px;
+}
+
+.sync-panel {
+  margin: 16px 0 48px;
+}
+
+.github-box {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #faf6ee;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 900;
+}
+
+@media (max-width: 880px) {
+  .app-top {
+    display: grid;
+  }
+
+  .hero-grid,
+  .two-col,
+  .option-grid,
+  .control-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head,
+  .panel-head,
+  .card-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sync-grid button {
+    width: 100%;
+  }
+}
+
