@@ -306,6 +306,63 @@ button {
   margin: 16px 0;
 }
 
+.consistency-strip {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.week-dots {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.week-dot {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-height: 54px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  color: var(--muted);
+}
+
+.week-dot strong,
+.week-dot span {
+  display: block;
+  line-height: 1.1;
+}
+
+.week-dot strong {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.week-dot span {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.week-dot.partial {
+  border-color: rgba(184, 109, 45, 0.34);
+  background: rgba(184, 109, 45, 0.1);
+}
+
+.week-dot.done {
+  border-color: rgba(47, 125, 90, 0.34);
+  background: rgba(47, 125, 90, 0.12);
+}
+
+.week-dot.today {
+  box-shadow: inset 0 0 0 2px rgba(48, 95, 155, 0.22);
+}
+
 .done-banner {
   margin: 14px 0 0;
   border: 1px solid rgba(47, 125, 90, 0.24);
@@ -427,5 +484,21 @@ summary {
     min-height: 44px;
     padding: 8px 10px;
     white-space: nowrap;
+  }
+
+  .week-dots {
+    gap: 6px;
+  }
+
+  .week-dot {
+    min-height: 48px;
+  }
+
+  .week-dot strong {
+    font-size: 12px;
+  }
+
+  .week-dot span {
+    font-size: 11px;
   }
 }

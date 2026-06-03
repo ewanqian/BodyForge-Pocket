@@ -69,6 +69,24 @@ function localDate() {
   return `${year}-${month}-${date}`;
 }
 
+function dateOffset(date, offset) {
+  const next = new Date(`${date}T00:00:00`);
+  next.setDate(next.getDate() + offset);
+  const year = next.getFullYear();
+  const month = String(next.getMonth() + 1).padStart(2, "0");
+  const dayOfMonth = String(next.getDate()).padStart(2, "0");
+  return `${year}-${month}-${dayOfMonth}`;
+}
+
+function completionCount(targetDay) {
+  const completed = targetDay?.completed || {};
+  return completionItems.filter(([key]) => completed[key]).length;
+}
+
+function isDayComplete(targetDay) {
+  return completionCount(targetDay) === completionItems.length;
+}
+
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
@@ -251,6 +269,7 @@ function render() {
   renderWorkoutOptions();
   renderCompletion();
   renderMuscles();
+  renderConsistency();
 }
 
 function renderMealOptions() {
@@ -325,6 +344,41 @@ function renderCompletion() {
   $("completionScore").textContent = `${done}/${completionItems.length}`;
   $("doneBanner").classList.toggle("hidden", !isComplete);
   $("reviewPanel").classList.toggle("complete", isComplete);
+  renderConsistency();
+}
+
+function renderConsistency() {
+  const container = $("weekDots");
+  container.innerHTML = "";
+  const weekDates = Array.from({ length: 7 }, (_, index) => dateOffset(today, index - 6));
+  let completedDays = 0;
+  weekDates.forEach((date) => {
+    const targetDay = state.days[date];
+    const done = completionCount(targetDay);
+    const isComplete = done === completionItems.length;
+    completedDays += isComplete ? 1 : 0;
+    const item = document.createElement("div");
+    item.className = [
+      "week-dot",
+      date === today ? "today" : "",
+      isComplete ? "done" : done > 0 ? "partial" : ""
+    ].filter(Boolean).join(" ");
+    item.innerHTML = `<strong>${date.slice(5).replace("-", "/")}</strong><span>${done}/${completionItems.length}</span>`;
+    item.title = `${date} ${done}/${completionItems.length}`;
+    container.appendChild(item);
+  });
+
+  let streak = 0;
+  for (let offset = 0; offset > -30; offset -= 1) {
+    const targetDay = state.days[dateOffset(today, offset)];
+    if (!isDayComplete(targetDay)) break;
+    streak += 1;
+  }
+  const todayDone = completionCount(day);
+  $("streakSummary").textContent = `${streak} 天连续`;
+  $("weekSummary").textContent = completedDays > 0
+    ? `最近 7 天闭环 ${completedDays} 天，今天完成 ${todayDone}/${completionItems.length}。`
+    : `今天完成 ${todayDone}/${completionItems.length}，先让这一周有痕迹。`;
 }
 
 function renderMuscles() {
